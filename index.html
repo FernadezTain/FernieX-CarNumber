@@ -221,10 +221,13 @@
         /* SLOT GROUPS */
         .slot-groups {
             display:flex; align-items:center; justify-content:center;
-            gap:8px; margin-bottom:24px;
-            flex-wrap:nowrap; /* всегда в одну строку */
+            gap:8px; margin-bottom:20px;
+            flex-wrap:nowrap;
             overflow-x:auto;
+            overflow-y:visible;
             scrollbar-width:none;
+            padding-bottom:4px; /* чтобы тень слотов не обрезалась */
+            -webkit-overflow-scrolling: touch;
         }
         .slot-groups::-webkit-scrollbar { display:none; }
         .slot-group {
@@ -342,15 +345,30 @@
         /* MOBILE */
         @media (max-width:480px) {
             h1 { font-size:2.4rem; }
-            h2 { font-size:1.4rem; margin-bottom:12px; }
-            .slot-digit { width:36px; height:50px; font-size:1.35rem; }
-            .slots-row { padding:8px 6px; gap:3px; }
-            .slot-groups { gap:5px; }
-            .plate-text { font-size:1.5rem; }
-            .plate-region-num { font-size:1.2rem; }
-            .slot-group-label { font-size:0.55rem; letter-spacing:1px; }
+            h2 { font-size:1.4rem; margin-bottom:10px; }
+
+            .slot-groups {
+                gap:4px;
+                justify-content:flex-start;
+                padding: 0 2px;
+            }
+            .slot-digit {
+                width:32px; height:46px; font-size:1.2rem;
+                border-radius:6px;
+            }
+            .slots-row { padding:7px 5px; gap:2px; border-radius:10px; }
+            .slot-group { gap:4px; }
+            .slot-group-label { font-size:0.5rem; letter-spacing:0.5px; }
+            .slot-sep { font-size:1rem; }
+
+            .plate-text { font-size:1.4rem; }
+            .plate-region-num { font-size:1.1rem; }
+            .plate-main { padding:5px 8px 5px 8px; gap:1px; }
+            .plate-region-block { padding:3px 7px; min-width:48px; }
+            .plate-spacer { width:4px; }
+
             .spin-buttons { gap:6px; }
-            .btn-secondary { min-width:90px; padding:8px 12px; font-size:0.8rem; }
+            .btn-secondary { min-width:80px; padding:8px 10px; font-size:0.78rem; }
         }
     </style>
 </head>
