@@ -693,10 +693,15 @@
         }
 
         // --- TELEGRAM ---
+        const CYR_TO_LAT = {
+            'А':'A','В':'B','Е':'E','К':'K','М':'M',
+            'Н':'H','О':'O','Р':'P','С':'C','Т':'T','У':'Y','Х':'X'
+        };
+
         document.getElementById('btn-telegram').addEventListener('click', () => {
             const plateStr = `${plate.l1}${plate.n1}${plate.n2}${plate.n3}${plate.l2}${plate.l3}${plate.region}`;
-            const payload = `carnumber_${plateStr}`;
-            const botLink = `https://t.me/FernieXBot?start=${encodeURIComponent(payload)}`;
+            const latin = plateStr.split('').map(c => CYR_TO_LAT[c] || c).join('');
+            const botLink = `https://t.me/FernieXBot?start=carnumber_${latin}`;
             window.open(botLink, '_blank');
         });
 
