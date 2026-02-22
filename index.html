@@ -57,8 +57,10 @@
 
         /* HEADER */
         header {
-            position:absolute; top:20px; left:0; width:100%;
-            text-align:center; z-index:10;
+            position:relative; top:auto; left:auto; width:100%;
+            text-align:center; z-index:10; padding:16px 0 8px;
+            flex-shrink:0;
+            animation: float 4s ease-in-out infinite;
         }
         .logo {
             font-family:'Bebas Neue', sans-serif;
@@ -80,6 +82,21 @@
             transform:translateY(24px);
             transition:opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
             padding:20px;
+        }
+        /* Generator step: header inside, scrollable */
+        #step-generator {
+            justify-content:flex-start;
+            padding:0 20px 20px;
+            overflow-y:auto;
+            scrollbar-width:none;
+        }
+        #step-generator::-webkit-scrollbar { display:none; }
+        #step-generator header {
+            position:relative; width:100%;
+            margin-bottom:8px;
+        }
+        #step-generator .content-box {
+            width:100%;
         }
         .step.active {
             opacity:1; visibility:visible; transform:translateY(0);
@@ -204,34 +221,40 @@
         /* SLOT GROUPS */
         .slot-groups {
             display:flex; align-items:center; justify-content:center;
-            gap:12px; margin-bottom:24px; flex-wrap:wrap;
+            gap:8px; margin-bottom:24px;
+            flex-wrap:nowrap; /* всегда в одну строку */
+            overflow-x:auto;
+            scrollbar-width:none;
         }
+        .slot-groups::-webkit-scrollbar { display:none; }
         .slot-group {
-            display:flex; flex-direction:column; align-items:center; gap:8px;
+            display:flex; flex-direction:column; align-items:center; gap:6px;
+            flex-shrink:0;
         }
         .slot-group-label {
-            font-size:0.7rem; letter-spacing:2px; color:var(--muted);
-            text-transform:uppercase;
+            font-size:0.6rem; letter-spacing:2px; color:var(--muted);
+            text-transform:uppercase; white-space:nowrap;
         }
         .slots-row {
-            display:flex; gap:5px;
+            display:flex; gap:4px;
             background:var(--card);
-            padding:14px 10px;
-            border-radius:14px;
+            padding:10px 8px;
+            border-radius:12px;
             border:1px solid var(--border);
             box-shadow:inset 0 0 20px rgba(0,0,0,0.6);
         }
         .slot-sep {
             display:flex; align-items:center;
-            color:var(--muted); font-size:1.4rem; font-family:'JetBrains Mono',monospace;
-            padding-top:4px;
+            color:var(--muted); font-size:1.2rem; font-family:'JetBrains Mono',monospace;
+            padding-top:0; flex-shrink:0;
+            align-self:center;
         }
 
         .slot-digit {
-            width:var(--slot-w); height:var(--slot-h);
+            width:42px; height:56px;
             background:#050508;
             color:var(--primary);
-            font-size:1.9rem; font-weight:700;
+            font-size:1.6rem; font-weight:700;
             font-family:'JetBrains Mono', monospace;
             display:flex; justify-content:center; align-items:center;
             border-radius:8px;
@@ -318,27 +341,29 @@
 
         /* MOBILE */
         @media (max-width:480px) {
-            :root { --slot-w:44px; --slot-h:58px; }
             h1 { font-size:2.4rem; }
-            h2 { font-size:1.5rem; }
-            .slot-digit { font-size:1.6rem; }
-            .plate-text { font-size:1.6rem; }
-            .plate-region { font-size:1.1rem; }
-            .slot-groups { gap:8px; }
-            .slots-row { padding:12px 8px; gap:4px; }
+            h2 { font-size:1.4rem; margin-bottom:12px; }
+            .slot-digit { width:36px; height:50px; font-size:1.35rem; }
+            .slots-row { padding:8px 6px; gap:3px; }
+            .slot-groups { gap:5px; }
+            .plate-text { font-size:1.5rem; }
+            .plate-region-num { font-size:1.2rem; }
+            .slot-group-label { font-size:0.55rem; letter-spacing:1px; }
+            .spin-buttons { gap:6px; }
+            .btn-secondary { min-width:90px; padding:8px 12px; font-size:0.8rem; }
         }
     </style>
 </head>
 <body>
     <div class="main-container">
-        <header>
-            <div class="logo">Fernie<span class="accent">X</span></div>
-            <div class="logo-sub">Авто-номера</div>
-        </header>
 
         <!-- WELCOME -->
         <section id="step-welcome" class="step active">
             <div class="content-box">
+                <div style="margin-bottom:16px;">
+                    <div class="logo">Fernie<span class="accent">X</span></div>
+                    <div class="logo-sub">Авто-номера</div>
+                </div>
                 <h1>Твой уникальный<br>авто-номер</h1>
                 <p class="subtitle">Крути слоты и получи красивый российский номерной знак за несколько секунд</p>
                 <button class="btn-primary" onclick="goToStep('step-generator')">Получить номер</button>
@@ -347,6 +372,10 @@
 
         <!-- GENERATOR -->
         <section id="step-generator" class="step">
+            <header>
+                <div class="logo">Fernie<span class="accent">X</span></div>
+                <div class="logo-sub">Авто-номера</div>
+            </header>
             <div class="content-box">
                 <h2>Крути номер</h2>
 
@@ -420,6 +449,9 @@
                     <button class="btn-secondary" id="btn-letters" onclick="spinGroup('letters')">Буквы</button>
                     <button class="btn-secondary" id="btn-numbers" onclick="spinGroup('numbers')">Цифры</button>
                     <button class="btn-secondary" id="btn-region" onclick="spinGroup('region')">Регион</button>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <button class="btn-primary" id="btn-full" onclick="spinAll()" style="font-size:0.9rem; padding:12px 28px;">🎲 Полный номер</button>
                 </div>
 
                 <div class="navigation-buttons">
@@ -621,6 +653,101 @@
                         checkAllSpun();
                     }
                 }, 500 + i * 350);
+                activeTimers.push(t);
+            });
+        }
+
+        // --- SPIN ALL (Полный номер) ---
+        function spinAll() {
+            if (spinning) return;
+            spinning = true;
+            ['letters','numbers','region'].forEach(g => {
+                document.getElementById('btn-'+g).disabled = true;
+            });
+            document.getElementById('btn-full').disabled = true;
+            document.getElementById('btn-continue').disabled = true;
+
+            const groups = ['letters', 'numbers', 'region'];
+            let completedGroups = 0;
+
+            // Генерируем финальные значения заранее
+            const finalLetters = [randLetter(), randLetter(), randLetter()];
+            const finalNumbers = [randDigit(), randDigit(), randDigit()];
+            const reg = randRegion();
+            const r1v = reg[0] || '7';
+            const r2v = reg.length >= 2 ? reg.slice(1) : '7';
+            const finalRegion = [r1v, r2v];
+
+            plate.region = reg;
+
+            // Сбрасываем все слоты в дефис сразу
+            ['l1','l2','l3'].forEach(s => { clearSlotFixed(s); document.getElementById(s).textContent = '-'; });
+            ['n1','n2','n3'].forEach(s => { clearSlotFixed(s); document.getElementById(s).textContent = '-'; });
+            ['r1','r2'].forEach(s => { clearSlotFixed(s); document.getElementById(s).textContent = '-'; });
+            ['prev-l1','prev-l2','prev-l3','prev-n1','prev-n2','prev-n3'].forEach(id => {
+                const el = document.getElementById(id);
+                el.textContent = '-'; el.classList.add('spinning-char');
+            });
+            document.getElementById('prev-reg').textContent = '--';
+            document.getElementById('prev-reg').classList.add('spinning-char');
+
+            // Крутим все одновременно
+            const allSlots = [
+                { id:'l1', final: finalLetters[0], genFn: randLetter, prevId:'prev-l1', group:'letters' },
+                { id:'n1', final: finalNumbers[0], genFn: randDigit,  prevId:'prev-n1', group:'numbers' },
+                { id:'n2', final: finalNumbers[1], genFn: randDigit,  prevId:'prev-n2', group:'numbers' },
+                { id:'n3', final: finalNumbers[2], genFn: randDigit,  prevId:'prev-n3', group:'numbers' },
+                { id:'l2', final: finalLetters[1], genFn: randLetter, prevId:'prev-l2', group:'letters' },
+                { id:'l3', final: finalLetters[2], genFn: randLetter, prevId:'prev-l3', group:'letters' },
+                { id:'r1', final: finalRegion[0],  genFn: randDigit,  prevId: null,     group:'region' },
+                { id:'r2', final: finalRegion[1],  genFn: randDigit,  prevId: null,     group:'region' },
+            ];
+
+            const intervals = allSlots.map(slot => {
+                const iv = setInterval(() => {
+                    document.getElementById(slot.id).textContent = slot.genFn();
+                }, 60);
+                activeIntervals.push(iv);
+                return iv;
+            });
+
+            let settled = 0;
+            allSlots.forEach((slot, i) => {
+                const t = setTimeout(() => {
+                    clearInterval(intervals[i]);
+                    document.getElementById(slot.id).textContent = slot.final;
+                    setSlotFixed(slot.id, slot.final);
+
+                    // Обновляем состояние plate
+                    if (slot.group === 'letters') plate[slot.id] = slot.final;
+                    else if (slot.group === 'numbers') plate[slot.id] = slot.final;
+
+                    // Обновляем превью
+                    if (slot.prevId) {
+                        const el = document.getElementById(slot.prevId);
+                        el.textContent = slot.final;
+                        el.classList.remove('spinning-char');
+                    }
+
+                    settled++;
+
+                    // Регион обновляем когда r2 готов (последний из региона)
+                    if (slot.id === 'r2') {
+                        const prevReg = document.getElementById('prev-reg');
+                        prevReg.textContent = plate.region;
+                        prevReg.classList.remove('spinning-char');
+                    }
+
+                    if (settled === allSlots.length) {
+                        spunGroups = { letters: true, numbers: true, region: true };
+                        spinning = false;
+                        ['letters','numbers','region'].forEach(g => {
+                            document.getElementById('btn-'+g).disabled = false;
+                        });
+                        document.getElementById('btn-full').disabled = false;
+                        document.getElementById('btn-continue').disabled = false;
+                    }
+                }, 400 + i * 200);
                 activeTimers.push(t);
             });
         }
